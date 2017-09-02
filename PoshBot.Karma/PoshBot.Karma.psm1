@@ -43,6 +43,9 @@ function Set-Karma {
 
     $now = (Get-Date).ToString('u')
 
+    # Some people with @mention people and others just use the username. Normalize it
+    $User = $User.TrimStart('@')
+
     $karmaState = @(Get-PoshBotStatefulData -Name KarmaState -ValueOnly)
     if (-not $karmaState) {
         $karmaState = @()
@@ -76,6 +79,7 @@ function Set-Karma {
         $currentKarma = $Karma
     }
 
+    # Prepend '@' so people get mentioned
     if (-not $User.StartsWith('@')) {
         $User = "@$User"
     }
