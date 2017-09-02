@@ -28,7 +28,8 @@ function Set-Karma {
         Give karma to someone
     #>
     [PoshBot.BotCommand(
-        CommandName = 'give-karma'
+        CommandName = 'give-karma',
+        Aliases = ('karma')
     )]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Scope='Function', Target='*')]
     [cmdletbinding()]
@@ -75,10 +76,14 @@ function Set-Karma {
         $currentKarma = $Karma
     }
 
+    if (-not $User.StartsWith('@')) {
+        $User = "@$User"
+    }
+
     if ($Karma -gt 0) {
-        Write-Output "Woot! @$($User) has $CurrentKarma karma"
+        Write-Output "Woot! $User has $CurrentKarma karma"
     } else {
-        Write-Output "@$($User) reduced to $currentKarma karma :("
+        Write-Output "$User reduced to $currentKarma karma :("
     }
 
     Set-PoshBotStatefulData -Value $karmaState -Name KarmaState -Depth 10
@@ -99,7 +104,7 @@ function Reset-Karma {
     )
 
     if (-not $Force) {
-        New-PoshBotCardResponse -Type Warning -Text 'Are you sure we want to be a karma killer? Use the --force if you do.'
+        New-PoshBotCardResponse -Type Warning -Text 'Are you sure we want to be a karma killer? Use the -Force if you do.'
     } else {
         Remove-PoshBotStatefulData -Name KarmaState
         Write-Output 'Karma state wiped clean'
