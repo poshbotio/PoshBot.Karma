@@ -40,9 +40,36 @@ task Pester -Depends Init {
     Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Verbose:$false
     Import-Module -Name $env:BHPSModuleManifest -Force -Verbose:$false
 
-    if (Test-Path -Path $tests) {
-        Invoke-Pester -Path $tests -PassThru -EnableExit
+     # Prep for testing
+    $PesterParams = @{}
+    $testResultFile = ''
+    switch ($ENV:BHBuildSystem) {
+        'AppVeyor' {
+            $testResultFile = (Join-Path $projectRoot 'pester.xml')
+            $PesterParams = @{
+                'OutputFile' = $testResultFile
+                'OutputFormat' = 'NUnitXML'
+            }
+            break
+        }
+        Default {}
     }
+
+    if (Test-Path -Path $tests) {
+        Invoke-Pester -Path $tests -PassThru -EnableExit @PesterParams
+    }
+
+    # Post testing functions
+    switch ($ENV:BHBuildSystem) {
+        'AppVeyor' {
+            (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", $testResultFile)
+            break
+        }
+        Default {}
+    }
+
+    
+
 } -description 'Run Pester tests'
 
 Task Publish -Depends Build {

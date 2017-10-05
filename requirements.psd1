@@ -9,4 +9,5 @@
     psake            = 'latest'
     pester           = 'latest'
     psscriptanalyzer = 'latest'
+    poshbot          = 'latest'
 }
