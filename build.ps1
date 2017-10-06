@@ -15,8 +15,17 @@ Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 if (-not (Get-Module -Name PSDepend -ListAvailable)) {
     Install-Module -Name PSDepend -Repository PSGallery -Confirm:$false -ErrorAction Stop
 }
+
+@('buildhelpers','psake','pester','psscriptanalyzer','poshbot') | % {
+  $moduleName = $_
+    if (-not (Get-Module -Name $moduleName -ListAvailable)) {
+        Install-Module -Name $moduleName -Repository PSGallery -Force -AllowClobber -Confirm:$false -ErrorAction Stop
+    }
+}
+
 Import-Module PSDepend -Verbose:$false -Force
-Invoke-PSDepend -Path $PSScriptRoot\requirements.psd1 -Install -Import -Force
+# PS Depend is causing issues in AppVeyor. Disabling for time being
+# Invoke-PSDepend -Path $PSScriptRoot\requirements.psd1 -Install -Import -Force
 
 if ($PSBoundParameters.ContainsKey('help')) {
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
