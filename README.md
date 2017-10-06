@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/t6gwm860cyifajor?svg=true)](https://ci.appveyor.com/project/devblackops/poshbot-karma)
 
 # PoshBot.Karma
 
