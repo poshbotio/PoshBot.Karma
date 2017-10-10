@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.0.1] - Unreleased
+## [1.0.1] - 2017-10-09
+
 ### Fixed
- - Prepend '@' to username if it doesn't already have it
+
+ - Normalize mention names by removing '@' when saving state.
+   Prepend '@' on display so user gets mentioned.
 
 ## [1.0.0] - 2017-09-01
 

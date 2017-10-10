@@ -118,7 +118,20 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = "
+## [1.0.1] - 2017-10-09
+
+### Fixed
+
+    - Normalize mention names by removing '@' when saving state.
+    Prepend '@' on display so user gets mentioned.
+
+## [1.0.0] - 2017-09-01
+
+### Added
+
+- Initial commit
+"
 
     } # End of PSData hashtable
 
