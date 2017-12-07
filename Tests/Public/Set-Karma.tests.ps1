@@ -3,7 +3,7 @@ $common = Join-Path (Split-Path -Parent $here) 'Common.ps1'
 . $common
 
 InModuleScope PoshBot.Karma {
-    Function New-MockKarma {
+    function New-MockKarma {
         Write-Output @(
             [PSCustomObject]@{
                 PSTypeName = 'Karma'
@@ -58,25 +58,19 @@ InModuleScope PoshBot.Karma {
 
     $testUsername = 'TestUser'
     describe 'Set-Karma' {
-        Context "Given no previous karama" {
+
+        Context 'Given no previous karma' {
             Mock Get-PoshBotStatefulData { $null } -ParameterFilter { $Name -eq 'KarmaState' }
             Mock Set-PoshBotStatefulData { }
+
             describe 'Adding fresh karma' {
-                $result = Set-Karma -User $testUsername
+                Set-Karma -Subject $testUsername
 
-                it 'should return the current karama level' {
-                    $result | Should Match "1 karma"
-                }
-
-                it 'should return the username with an ampersand' {
-                    $result | Should Match ('@' + $testUsername)
-                }
-
-                it 'should save the new karama state' {
+                it 'should have saved a new karma state' {
                     Assert-MockCalled Set-PoshBotStatefulData -ParameterFilter {
-                        $Name -eq 'KarmaState' `
-                        -and $Value[0].Name -eq $testUsername `
-                        -and $Value[0].CurrentKarma -eq 1
+                        $Name -eq 'KarmaState' -and
+                        $Value[0].Name -eq $testUsername -and
+                        $Value[0].CurrentKarma -eq 1
                     }
                 }
             }
@@ -87,34 +81,26 @@ InModuleScope PoshBot.Karma {
             Mock Get-PoshBotStatefulData { New-MockKarma } -ParameterFilter { $Name -eq 'KarmaState' }
             Mock Set-PoshBotStatefulData { }
             describe 'Adding additional karma' {
-                $result = Set-Karma -User $testUsername
+                Set-Karma -Subject $testUsername
 
-                it 'should return the current karama level' {
-                    $result | Should Match "91 karma"
-                }
-
-                it 'should return the username with an ampersand' {
-                    $result | Should Match ('@' + $testUsername)
-                }
-
-                it 'should save the new karama state' {
+                it 'should save the new karma state' {
                     Assert-MockCalled Set-PoshBotStatefulData -ParameterFilter {
                         if ($Name -ne 'KarmaState') { return $false }
 
                         $found = $false
-                        $Value | % { 
+                        $Value | ForEach-Object {
                             $found = $found -or (
                                 $_.Name -eq $testUsername -and $_.CurrentKarma -eq 91
                             )
                         }
-                        
+
                         return $found
                     }
                 }
 
                 it 'should not modify other karma' {
                     $originalKarma = @{}
-                    New-MockKarma | % { 
+                    New-MockKarma | ForEach-Object {
                         $originalKarma[$_.Name] = $_.CurrentKarma
                     }
 
@@ -122,12 +108,12 @@ InModuleScope PoshBot.Karma {
                         if ($Name -ne 'KarmaState') { return $false }
 
                         $allOk = $true
-                        $Value | % { 
+                        $Value | ForEach-Object {
                             $allOk = $allOk -and (
                                 $_.Name -eq $testUsername -or $_.CurrentKarma -eq $originalKarma[$_.Name]
                             )
                         }
-                        
+
                         return $allOk
                     }
                 }
