@@ -75,7 +75,7 @@ task Pester -Depends Init {
 
 } -description 'Run Pester tests'
 
-Task Publish -Depends Build {
+Task Publish -Depends Test {
     "    Publishing version [$($manifest.ModuleVersion)] to PSGallery..."
     Publish-Module -Path $sut -NuGetApiKey $env:PSGalleryApiKey -Repository PSGallery
 }
