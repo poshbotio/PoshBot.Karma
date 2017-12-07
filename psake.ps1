@@ -45,30 +45,33 @@ task Pester -Depends Init {
     $testResultFile = ''
     switch ($ENV:BHBuildSystem) {
         'AppVeyor' {
-            $testResultFile = (Join-Path $projectRoot 'pester.xml')
+            $testResultFile = Join-Path -Path $projectRoot -ChildPath 'pester.xml'
             $PesterParams = @{
-                'OutputFile' = $testResultFile
-                'OutputFormat' = 'NUnitXML'
+                OutputFile = $testResultFile
+                OutputFormat = 'NUnitXML'
             }
             break
         }
         Default {}
     }
 
+    # Run tests
     if (Test-Path -Path $tests) {
-        Invoke-Pester -Path $tests -PassThru -EnableExit @PesterParams
-    }
+        $testResults = Invoke-Pester -Path $tests -PassThru @PesterParams
 
-    # Post testing functions
-    switch ($ENV:BHBuildSystem) {
-        'AppVeyor' {
-            (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", $testResultFile)
-            break
+        # Post test results
+        switch ($ENV:BHBuildSystem) {
+            'AppVeyor' {
+                (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", $testResultFile)
+                break
+            }
+            Default {}
         }
-        Default {}
     }
 
-    
+    if ($testResults.FailedCount -gt 0) {
+        throw "$($testResults.FailedCount) tests failed!"
+    }
 
 } -description 'Run Pester tests'
 

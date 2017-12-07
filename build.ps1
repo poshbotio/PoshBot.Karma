@@ -1,7 +1,8 @@
 
+
 [cmdletbinding(DefaultParameterSetName = 'task')]
 param(
-    [parameter(ParameterSetName = 'task')]
+    [parameter(ParameterSetName = 'task', Position = 0)]
     [string[]]$Task = 'default',
 
     [parameter(ParameterSetName = 'help')]
@@ -11,25 +12,15 @@ param(
 Get-PackageProvider -Name Nuget -ForceBootstrap | Out-Null
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 
-# Load up dependencies!
 if (-not (Get-Module -Name PSDepend -ListAvailable)) {
-    Install-Module -Name PSDepend -Repository PSGallery -Confirm:$false -ErrorAction Stop
+    Install-module -Name PSDepend -Repository PSGallery
 }
-
-@('buildhelpers','psake','pester','psscriptanalyzer','poshbot') | % {
-  $moduleName = $_
-    if (-not (Get-Module -Name $moduleName -ListAvailable)) {
-        Install-Module -Name $moduleName -Repository PSGallery -Force -AllowClobber -Confirm:$false -ErrorAction Stop
-    }
-}
-
-Import-Module PSDepend -Verbose:$false -Force
-# PS Depend is causing issues in AppVeyor. Disabling for time being
-# Invoke-PSDepend -Path $PSScriptRoot\requirements.psd1 -Install -Import -Force
+Import-Module -Name PSDepend -ErrorAction Stop
+Invoke-PSDepend -Path .\requirements.psd1 -Install -Import -Force > $null
 
 if ($PSBoundParameters.ContainsKey('help')) {
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
-        Format-Table -Property Name, Description, Alias, DependsOn -AutoSize
+        Format-Table -Property Name, Description, Alias, DependsOn
 } else {
     Set-BuildEnvironment -Force
 
