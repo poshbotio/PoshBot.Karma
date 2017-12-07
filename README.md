@@ -2,7 +2,7 @@
 
 # PoshBot.Karma
 
-A simple [PoshBot](https://github.com/poshbotio/PoshBot) plugin to grant or take away karma from people.
+A simple [PoshBot](https://github.com/poshbotio/PoshBot) plugin to managing karma.
 
 ## Install Module
 
@@ -22,28 +22,48 @@ To install the plugin from within PoshBot:
 
 ## Commands
 
-- leaderboard
-- @\<username>++
-- @\<username>--
+- **!karma**
+
+  Show the top 5 karma holders
+
+- **!karma best**
+
+  Show the top 5 karma holders
+
+- **!karma best 10**
+
+  Show the top 10 karma holders
+
+- **!karma worst**
+
+  Show the worst 5 karma holders
+
+- **!karma worst 10**
+
+  Show the worst 10 karma holders
+
+- **!karma \<thing>**
+
+  Show karma for `<thing>`
+
+- **!karma empty \<thing>**
+
+  Remove **all** karma from `<thing>`
+
+- **\<thing>++**
+
+  Give karma to `<thing>`
+
+- **\<thing>--**
+
+  Remove karma from `<thing`
 
 ## Usage
 
 ```
- Good job! @joeuser++
-
-
-http://media1.giphy.com/media/o0vwzuFwCGAFO/giphy-downsized.gif
+Good job! @sallysue++
 ```
 
 ```
-!giphy --search squirrel --number 2
-
-http://media0.giphy.com/media/jn5jcY94IP6VO/giphy-downsized.gif
-http://media.giphy.com/media/X4sbcP4xNXTY4/giphy-tumblr.gif
-```
-
-```
-!giphy --trending
-
-http://media3.giphy.com/media/lYevwCwCSlfIA/giphy-downsized.gif
+That's not a nice thing to say @joeuser--
 ```

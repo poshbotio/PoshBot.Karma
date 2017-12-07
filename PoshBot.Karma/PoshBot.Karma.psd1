@@ -12,7 +12,7 @@
 RootModule = 'PoshBot.Karma.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1'
+ModuleVersion = '2.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -70,9 +70,15 @@ RequiredModules = @('PoshBot')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
-    'Get-KarmaLeaderboard'
-    'Set-Karma'
-    'Reset-Karma'
+    # 'Get-KarmaLeaderboard'
+    # 'Set-Karma'
+    # 'Reset-Karma',
+    'Add-Karma',
+    'Remove-Karma'
+    'Karma'
+    # 'Get-KarmaBest',
+    # 'Get-KarmaWorst',
+    ##'Reset-Karma'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -96,13 +102,6 @@ AliasesToExport = @()
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
 
-    Permissions = @(
-        @{
-            Name = 'karma-killer'
-            Description = 'Can wipe the karma slate clean'
-        }
-    )
-
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
@@ -118,20 +117,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = "
-## [1.0.1] - 2017-10-09
-
-### Fixed
-
-    - Normalize mention names by removing '@' when saving state.
-    Prepend '@' on display so user gets mentioned.
-
-## [1.0.0] - 2017-09-01
-
-### Added
-
-- Initial commit
-"
+        ReleaseNotes = 'https://raw.githubusercontent.com/poshbotio/PoshBot.Karma/master/CHANGELOG.md'
 
     } # End of PSData hashtable
 
