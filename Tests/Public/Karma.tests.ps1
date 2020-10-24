@@ -72,7 +72,7 @@ InModuleScope PoshBot.Karma {
 
         $result = karma -Count 3
         it 'Selects top N karma' {
-            $result.Text.Split($NL).Count | should be 9
+            $result.Text.Split($NL).Count | should be 5
         }
     }
 

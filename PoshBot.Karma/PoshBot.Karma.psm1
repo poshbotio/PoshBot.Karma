@@ -30,7 +30,7 @@ function Set-Karma {
         $karmaState = @()
     }
     if ($karmaState.Count -ge 1 ) {
-        $CurrentKarma = 0
+        $currentKarma = 0
         $subjectKarma = $KarmaState | Where-Object {$_.Name -eq $Subject}
         if ($subjectKarma) {
             if ($Set) {
@@ -38,27 +38,27 @@ function Set-Karma {
             } else {
                 [int]$subjectKarma.CurrentKarma += $Karma
             }
-            $CurrentKarma = [int]$subjectKarma.CurrentKarma
+            $currentKarma = [int]$subjectKarma.CurrentKarma
             $subjectKarma.LastUpdated = $now
         } else {
             $subjectKarma = [pscustomobject]@{
-                PSTypeName = 'Karma'
-                Name = $Subject
+                PSTypeName   = 'Karma'
+                Name         = $Subject
                 CurrentKarma = $Karma
-                LastUpdated = $now
+                LastUpdated  = $now
             }
-            $karmaState += $subjectKarma
-            $CurrentKarma = $subjectKarma.CurrentKarma
+            $karmaState  += $subjectKarma
+            $currentKarma = $subjectKarma.CurrentKarma
         }
     } else {
         $karmaState = @()
         $item = [pscustomobject]@{
-            PSTypeName = 'Karma'
-            Name = $Subject
+            PSTypeName   = 'Karma'
+            Name         = $Subject
             CurrentKarma = $Karma
-            LastUpdated = $now
+            LastUpdated  = $now
         }
-        $karmaState += $item
+        $karmaState  += $item
         $currentKarma = $Karma
     }
 
@@ -81,9 +81,9 @@ $decrementResponses = @(
 
 function Add-Karma {
     [PoshBot.BotCommand(
-        Command = $false,
+        Command     = $false,
         TriggerType = 'regex',
-        Regex = '(\S+[^+:\s])[: ]*\+\+(\s|$)'
+        Regex       = '(\S+[^+:\s])[: ]*\+\+(\s|$)'
     )]
     [cmdletbinding()]
     param(
@@ -99,9 +99,9 @@ function Add-Karma {
 function Remove-Karma {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Scope='Function', Target='*')]
     [PoshBot.BotCommand(
-        Command = $false,
+        Command     = $false,
         TriggerType = 'regex',
-        Regex = '(\S+[^-:\s])[: ]*--(\s|$)'
+        Regex       = '(\S+[^-:\s])[: ]*--(\s|$)'
     )]
     [cmdletbinding()]
     param(
@@ -118,7 +118,8 @@ function Karma {
     [PoshBot.BotCommand()]
     [cmdletbinding()]
     param(
-        [string]$Action,
+        [ValidateSet('show', 'best', 'worst', 'empty', 'wipe')]
+        [string]$Action = 'best',
 
         [string]$Subject,
 
@@ -128,7 +129,20 @@ function Karma {
     $karmaState = Get-PoshBotStatefulData -Name KarmaState -ValueOnly
 
     switch ($Action) {
-        {($_ -eq 'Best') -or ([string]::IsNullOrEmpty($_))} {
+        'show' {
+            if ($Subject) {
+                $subjectKarma = $karmaState.Where({$_.Name -eq $Subject})
+                if ($subjectKarma) {
+                    New-PoshBotTextResponse -Text $subjectKarma.CurrentKarma -AsCode
+                } else {
+                    Write-Output "$Subject doesn't have any karama :("
+                }
+            } else {
+                Write-Output 'Show what/who?'
+            }
+            break
+        }
+        'best' {
             $ranking = $karmaState |
                 Sort-Object -Property {[int]$_.CurrentKarma} -Descending |
                 Select-Object -First $Count -Wait
@@ -139,7 +153,7 @@ function Karma {
             New-PoshBotTextResponse -Text $text -AsCode
             break
         }
-        'Worst' {
+        'worst' {
             $ranking = $karmaState |
                 Sort-Object -Property {[int]$_.CurrentKarma} |
                 Select-Object -First $Count -Wait
@@ -150,7 +164,7 @@ function Karma {
             New-PoshBotTextResponse -Text $text -AsCode
             break
         }
-        'Empty' {
+        'empty' {
             if ($Subject) {
                 Set-Karma -Subject $subject -Karma 0 -Set
                 Write-Output "$Subject karma wiped clean."
@@ -171,6 +185,7 @@ function Karma {
             } else {
                 Write-Output 'Wipe what/who?'
             }
+            break
         }
     }
 }

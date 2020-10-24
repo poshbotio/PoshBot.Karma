@@ -12,7 +12,7 @@
 RootModule = 'PoshBot.Karma.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.0.0'
+ModuleVersion = '2.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@ Author = 'Brandon Olin'
 CompanyName = 'Community'
 
 # Copyright statement for this module
-Copyright = '(c) 2017 Brandon Olin. All rights reserved.'
+Copyright = '(c) 2020 Brandon Olin. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'A karma plugin for PoshBot'

@@ -22,6 +22,14 @@ To install the plugin from within PoshBot:
 
 ## Commands
 
+- **\<thing>++**
+
+  Give karma to `<thing>`
+
+- **\<thing>--**
+
+  Remove karma from `<thing`
+
 - **!karma**
 
   Show the top 5 karma holders
@@ -42,21 +50,13 @@ To install the plugin from within PoshBot:
 
   Show the worst 10 karma holders
 
-- **!karma \<thing>**
+- **!karma show \<thing>**
 
   Show karma for `<thing>`
 
 - **!karma empty \<thing>**
 
   Remove **all** karma from `<thing>`
-
-- **\<thing>++**
-
-  Give karma to `<thing>`
-
-- **\<thing>--**
-
-  Remove karma from `<thing`
 
 ## Usage
 
