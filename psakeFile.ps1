@@ -1,5 +1,6 @@
 properties {
     $PSBPreference.Build.CompileModule = $true
+    $PSBPreference.Help.DefaultLocale  = 'en-US'
 }
 
 task default -depends Test
