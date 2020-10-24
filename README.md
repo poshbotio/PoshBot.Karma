@@ -1,5 +1,5 @@
 | GitHub Actions | PSGallery | License |
-|-----------------|----------------|-----------|---------|
+|----------------|-----------|---------|
 [![GitHub Actions Status][github-actions-badge]][github-actions-build] | [![PowerShell Gallery][psgallery-badge]][psgallery] | [![License][license-badge]][license]
 
 # PoshBot.Karma
