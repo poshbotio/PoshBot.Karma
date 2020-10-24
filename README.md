@@ -1,4 +1,6 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/t6gwm860cyifajor?svg=true)](https://ci.appveyor.com/project/devblackops/poshbot-karma)
+| GitHub Actions | PSGallery | License |
+|-----------------|----------------|-----------|---------|
+[![GitHub Actions Status][github-actions-badge]][github-actions-build] | [![PowerShell Gallery][psgallery-badge]][psgallery] | [![License][license-badge]][license]
 
 # PoshBot.Karma
 
@@ -67,3 +69,10 @@ Good job! @sallysue++
 ```
 That's not a nice thing to say @joeuser--
 ```
+
+[github-actions-badge]: https://github.com/poshbotio/PoshBot.Karma/workflows/CI/badge.svg
+[github-actions-build]: https://github.com/poshbotio/PoshBot.Karma/actions
+[psgallery-badge]:      https://img.shields.io/powershellgallery/dt/PoshBot.Karma.svg
+[psgallery]:            https://www.powershellgallery.com/packages/PoshBot.Karma
+[license-badge]:        https://img.shields.io/github/license/poshbotio/PoshBot.Karma.svg
+[license]:              https://www.powershellgallery.com/packages/PoshBot.Karma
